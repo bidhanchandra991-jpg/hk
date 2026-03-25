@@ -14,7 +14,9 @@ jobs:
           distribution: 'temurin'
 
       - name: Install CMake and NDK
-        run: yes | sdkmanager --install "cmake;3.22.1" "ndk;25.2.9519653"
+        run: |
+          echo "y" | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --install "cmake;3.22.1" "ndk;25.2.9519653"
+          echo "y" | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
