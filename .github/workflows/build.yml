@@ -13,18 +13,19 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Install CMake and NDK
+      - name: Accept Licenses & Install Tools
         run: |
-          echo "y" | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --install "cmake;3.22.1" "ndk;25.2.9519653"
-          echo "y" | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses
+          yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses
+          $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --install "cmake;3.22.1" "ndk;23.2.8568313"
+
+      - name: Force CMake Version (Master Hack)
+        run: echo "cmake.dir=$ANDROID_HOME/cmake/3.22.1" > local.properties
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
       - name: Build AAR with Gradle
         run: ./gradlew assembleRelease
-        env:
-          ANDROID_NDK_HOME: /usr/local/lib/android/sdk/ndk/25.2.9519653
 
       - name: Upload Build Result
         uses: actions/upload-artifact@v4
